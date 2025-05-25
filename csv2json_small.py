@@ -1,12 +1,31 @@
 import pandas as pd
 import sys
 import os
+import argparse
+import json
+def main():#input_path, output_path):
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--input_path', type=str, required=True)
+    parser.add_argument('-o', '--output_path', type=str, required=True)
+    parser.add_argument('-a', '--area_path', type=str, default='data/arealist.json', required=True)
+    args = parser.parse_args()
 
-def main(input_path, output_path):
-    arealist = pd.read_csv("arealist.csv")
+    input_path = args.input_path
+    output_path = args.output_path
+    with open(args.area_path) as fi:
+        area_data = json.load(fi)
+        area_table = []
+        for key, val in area_data.items():
+            print(key, val)
+            area_table.append([key, val['area_name'], val['area_block']])#[0], val[1]])
+            pass
+        # print(area_table)
+        arealist = pd.DataFrame(area_table, columns=['area_id', 'area_name', 'area_block'])
+#        arealist = pd.DataFrame(area_data.values())
     data = pd.read_csv(input_path)
+    print(data)
 
-    arealist = arealist[['area_id', 'area_name', 'area_block']]
+ #   arealist = arealist[['area_id', 'area_name', 'area_block']]
     data.rename(columns={'area': 'area_name'}, inplace=True)
 
     # ファイルサイズ削減のためarea_nameをarea_idで置換
@@ -37,11 +56,12 @@ def main(input_path, output_path):
     print(f"File saved to {json_output_path}")
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python script.py <input_path> <output_path>")
-        sys.exit(1)
+    main()
+    # if len(sys.argv) != 3:
+    #     print("Usage: python script.py <input_path> <output_path>")
+    #     sys.exit(1)
 
-    input_path = sys.argv[1]
-    output_path = sys.argv[2]
+    # input_path = sys.argv[1]
+    # output_path = sys.argv[2]
 
-    main(input_path, output_path)
+    # main(input_path, output_path)

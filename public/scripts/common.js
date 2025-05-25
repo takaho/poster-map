@@ -1,32 +1,34 @@
+const BASEDIR = '/shinagawa'
+
 async function getAreaList() {
-  const arealistResponse = await fetch('/data/arealist.json');
+  const arealistResponse = await fetch(`${BASEDIR}/arealist.json`);
   const arealist = await arealistResponse.json();
   return arealist;
 }
 
 async function getProgress() {
-  const progressResponse = await fetch('/data/summary.json');
+  const progressResponse = await fetch(`${BASEDIR}/summary.json`);
   const progress = await progressResponse.json();
   return progress;
 }
 
 async function getProgressCountdown() {
-  const progressResponse = await fetch('/data/summary_absolute.json');
+  const progressResponse = await fetch(`${BASEDIR}/summary_absolute.json`);
   const progress = await progressResponse.json();
   return progress;
 }
 
 async function getVoteVenuePins() {
-  const response = await fetch('/data/vote_venue.json')
+  const response = await fetch(`${BASEDIR}/vote_venue.json`)
   return response.json();
 }
 
 async function getBoardPins(block=null, smallBlock=null) {
   let response
   if (block==null) {
-    response = await fetch('/data/all.json')
+    response = await fetch(`${BASEDIR}/all.json`)
   } else {
-    response = await fetch(`/data/block/${block}.json`)
+    response = await fetch(`${BASEDIR}/block/${block}.json`)
   }
   const data = await response.json();
 
